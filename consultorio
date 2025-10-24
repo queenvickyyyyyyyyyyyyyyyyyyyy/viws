@@ -1,0 +1,58 @@
+CREATE TABLE AMBULATORIOS(
+ coda int PRIMARY KEY,
+ andar int,
+ capacidade int
+);
+
+CREATE TABLE MEDICOS(
+codm int PRIMARY KEY,
+cpf varchar (100),
+nome varchar (100),
+idade int,
+cidade varchar (100),
+especialidade varchar (100),
+coda int,
+FOREIGN KEY(coda)REFERENCES AMBULATORIOS(coda)
+);
+
+CREATE TABLE PACIENTES(
+codp int PRIMARY KEY,
+cpf varchar (100),
+nome varchar (100),
+idade int,
+cidade varchar (100),
+doenca varchar (100)
+);
+
+CREATE TABLE CONSULTAS(
+codm int,
+codp int,
+data_consulta date,
+hora time,
+FOREIGN KEY(codm)REFERENCES MEDICOS(codm),
+FOREIGN KEY(codp)REFERENCES PACIENTES(codp)
+);
+
+INSERT INTO AMBULATORIOS(coda, andar, capacidade)
+VALUES(1, 1, 20),
+	  (2, 2, 20);
+
+INSERT INTO MEDICOS(codm, cpf, nome, idade, cidade, especialidade, coda)
+VALUES(1, '123', 'Matheus', 52, 'Guarabira', 'Pediatria', 1),
+	  (2, '987', 'Julia', 29, 'Marí', 'Neuro', 2);
+
+INSERT INTO PACIENTES(codp, cpf, nome, idade, cidade, doenca)
+VALUES(1, '564', 'Joaõ', 11, 'Guarabira', 'Gripe'),
+	  (2, '951', 'Eduarda', 40, 'João Pessoa', 'Cancer');
+
+INSERT INTO CONSULTAS(codm, codp, data_consulta, hora)
+VALUES(1, 1, '20/10/2025', '14:00'),
+	  (2, 2, '18/10/2025', '09:00');
+
+CREATE VIEW medico_paciente_hora AS SELECT
+m.nome AS nome_medico,
+p.nome AS nome_paciente,
+c.hora
+FROM CONSULTAS c
+JOIN MEDICOS m ON c.codm = m.codm
+JOIN PACIENTES p ON c.codp = p.codp;
