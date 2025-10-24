@@ -56,3 +56,21 @@ c.hora
 FROM CONSULTAS c
 JOIN MEDICOS m ON c.codm = m.codm
 JOIN PACIENTES p ON c.codp = p.codp;
+
+CREATE VIEW vw_consulta_ambulatorio AS
+SELECT 
+c.hora AS data_consulta,
+a.andar AS andar_ambulatorio,
+m.codm AS codm_medico
+FROM Consultas c
+JOIN Medicos m ON c.codm = m.codm
+JOIN Ambulatorios a ON m.coda = a.coda;
+
+CREATE VIEW medico_data_hora AS
+SELECT
+m.nome AS nome_medico,
+c.data_consulta AS data,
+c.hora AS hora_consulta
+FROM MEDICOS m
+LEFT JOIN Consultas c ON c.codm = m.codm;
+
